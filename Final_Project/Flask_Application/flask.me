@@ -1,0 +1,51 @@
+# Below steps briefly introduced how we deploy our flask app on a Alibaba ECS virtual machine
+
+1) Start the ECS on Alibaba cloud, and login to the ECS virtual machine, which would be a ubuntu 14.04 system. However, this does not meet our requirement, because tensorflow does not support ubuntu 14.04. To do the upgrade, just simply do:
+	`sudo apt-get update`
+	`sudo apt-get upgrade`
+	`sudo apt-get install update-manager-core`
+	`do-release-upgrade`
+	this might take 1 hour or more.
+
+2) Install Python v3.6.5, because version higher than 3.6 is not supported by tensorflow. simply do:
+	install all the dependencies: `sudo apt-get install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++  openssl-devel`
+	download python from official site: `wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tgz`
+	decompress the file: `tar -xf Python-3.6.5.tgz`
+	cd into folder and modify the setup file(to enable ssl): `vim ~/Python-3.6.5/Modules/Setup.dist`
+	*in this file, several lines about ssl and socketmodule are commented out, need to delete the comment, otherwise python would raise 'No Module named _ssl'*
+	configure the installation:`./configure --prefix=/whatever u want to install python/`, `make`, `make install`
+
+3) install all other packages using pip (may need to reset the environment PATH to use pip3.6 rather than pip3.7): tensorflow, keras, sklearn, gunicorn, supervisor, and most importantly, virtualenv.
+
+4) start a virtualenv using python3.6
+	`virtualenv -p /path/to/python3.6 env`
+
+5) upload Flask app using sftp
+
+6) configure gunicorn in Flask:
+	`touch gunicorn.conf`
+	`vim gunicorn.conf`
+	only two lines in the configuration file: 1. workers = any number of workers you want, 2.bind='127.0.0.1:8888'
+
+7) configure supervisor:
+	cd to the supervisor folder: `cd /etc/supervisor/conf.d`
+	create configuration file: `touch info7390.conf`
+	need to specify the web app folder path and also the command to start the server
+	the reason we use supervisor is because it can help us supervise the server, autostart and autorestart when the server is down
+	for more details about how to configure the supversor, please refer to `supervisor.org`
+	after configuration:
+	`sudo supervisorctl reread`
+	`sudo supervisorctl update`
+	`sudo supervisorctl start info7390`
+
+8) setup nginx:
+	install nginx: `sudo apt-get install nginx`, do `sudo apt-get update` first if failed
+	cd to the nginx configure folder: `cd /etc/nginx/sites-available`
+	create configuration file: `touch info7390.conf`, and `vim info7390.conf`
+	need to specify the port number we want to listen to, here we are listening to 8001, and redirect to port 8888 as we alreadu set it in the gunicorn configuration
+	start the server: `cd ../sites-enabled`, link to the config file`ln -s ../sites-available/info7390 ./info7390`
+	and then restart nginx: `sudo service nginx restart`
+
+9) setup the security rules on Alibaba cloud, for both IN and OUT, allow for port number 8000-9000.
+
+10) done~!

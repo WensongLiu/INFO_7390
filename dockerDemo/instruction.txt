@@ -1,0 +1,6 @@
+instruction:
+
+	1> download docker from docker website
+	2> in the command line run below command: 
+		docker build -t python https://github.com/SummerShoohaw/INFO_7390_Fall.git\#:dockerDemo
+	3> should be able to see hello world from command line.

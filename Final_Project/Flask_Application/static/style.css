@@ -1,0 +1,33 @@
+body{
+    background-color: lavender;
+    background-image: url("/static/fruit_background.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size:cover;
+}
+
+.title{
+    font-size: 15px;
+    text-align:center;
+    margin-top:1em;
+    margin-bottom: 1em;
+    color: white;
+}
+
+.text{
+    position: center;
+    width:250px;
+    height:25px;
+    text-align:center;
+}
+
+.button{
+    width: 100px;
+    height: 30px;
+    border: solid 1px blue;
+    border-radius: 2px;
+    background-color: blue;
+    font-size: 14px;
+    color: #ffffff;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fruit Recognition Deep Learning Boilerplate</title>
+    <link rel ="stylesheet" href="/static/style.css" type="text/css">
+</head>
+<body>
+    <header>
+        <div class="title">
+            <h1>Fruit Recognition Deep Learning Boilerplate</h1>
+        </div>
+    </header>
+    <div align="center">
+        <form method="POST" action="/test">
+            <input class="text" name="imageurl" type="text" placeholder="Please input the url of target image" /><br>
+            <input class="text" name="fruit" type="text" placeholder="What is this fruit?" /><br>
+            <input class="button" type="submit" value="Submit"><br>
+        </form>
+        <form method="GET" action="/refresh">
+            <input class="button" type="submit" value="Refresh" />
+        </form>
+    </div>
+</body>
+</html>

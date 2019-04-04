@@ -1,0 +1,19 @@
+<!doctype html>
+<h1>Hello from html templates</h1>
+{% if name %}
+<h2>Hello {{name}} !</h2>
+{% else %}
+<h2>Hello, world!</h2>
+{% endif %}
+
+<div>
+	<form method="POST" action="/test">
+		<p>Please upload your image:</p>
+		<input type="text" name="imageurl" />
+		<input type="submit" value="Submit" />
+	</form>
+	<form method="GET" action="/refresh">
+		<input type="submit" value="Refresh Model" />
+	</form>
+
+</div>
